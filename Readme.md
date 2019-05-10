@@ -1,0 +1,1 @@
+This project is an example showing how to use libgdx with kotlin on android.
