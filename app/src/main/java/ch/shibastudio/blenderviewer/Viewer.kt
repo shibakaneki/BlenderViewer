@@ -1,6 +1,7 @@
 package ch.shibastudio.blenderviewer
 
 import com.badlogic.gdx.ApplicationListener
+import com.badlogic.gdx.Files
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.PerspectiveCamera
@@ -11,7 +12,9 @@ import com.badlogic.gdx.graphics.VertexAttributes.Usage
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g3d.*
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight
+import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController
+import com.badlogic.gdx.utils.UBJsonReader
 
 
 class Viewer : ApplicationListener {
@@ -46,13 +49,18 @@ class Viewer : ApplicationListener {
         Gdx.input.inputProcessor = cameraController
 
         // -- Create the model --
-        model = ModelBuilder().createBox(
+
+        /*model = ModelBuilder().createBox(
             5F,
             5F,
             5F,
             Material(ColorAttribute.createDiffuse(Color.GREEN)),
             Usage.Position.toLong() or Usage.Normal.toLong()
-        )
+        )*/
+
+        val jsonReader = UBJsonReader()
+        val modelLoader = G3dModelLoader(jsonReader)
+        model = modelLoader.loadModel(Gdx.files.getFileHandle("data/dice.g3db", Files.FileType.Internal))
 
         modelInstance = ModelInstance(model)
 
@@ -71,7 +79,7 @@ class Viewer : ApplicationListener {
         cameraController!!.update()
 
         modelBatch!!.begin(camera)
-        modelBatch!!.render(modelInstance, environment)
+        modelBatch!!.render(modelInstance/*, environment*/)
         modelBatch!!.end()
     }
 
